@@ -1474,7 +1474,7 @@ function Druid.Rotation()
         end
       end
     end
-    if Target and Target.ValidEnemy and Target.Distance < 5 and not Buff.FormCat:Exist() and Player.Energy == 100 then
+    if Target and Target.ValidEnemy and Target.Distance < 5 and not Buff.FormCat:Exist() and Player.Energy >= 70 then
       if Spell.FormCat:IsReady() then
         if Spell.FormCat:Cast() then return true end
       end
