@@ -34,7 +34,7 @@ local noAoeList = {
 local function aoeCheck()
   for _, Unit in pairs(DMW.Attackable) do
     -- if Unit.Distance <= 10 and noAoeList[Unit.ObjectID] then
-    if Unit.Distance <= 11 and not GrindBot.Grinding:CheckLevel(Unit.Level) and
+    if Unit.Distance <= 11 and not GrindBot.Grinding:CheckLevel(Unit.Level,0) and
         not Unlocked.UnitThreatSituation(DMW.Player.Pointer, Unit.Pointer) then
       -- print(Unit.Name)
       return false
