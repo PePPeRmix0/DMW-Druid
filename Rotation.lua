@@ -873,8 +873,8 @@ function Druid.Rotation()
     end
   end
   -- end
-  -- if Player.Casting then pauseTime = DMW.Time end
-  -- if pauseTime and DMW.Time - pauseTime <= 0.1 then return true end
+  if Player.Casting then pauseTime = DMW.Time end
+  if pauseTime and DMW.Time - pauseTime <= 0.1 then return true end
   -- if Target and Target.ValidEnemy and Target.Distance <= 5 and Target:Facing() then
   --     if not IsCurrentSpell(Spell.Attack.SpellID) then Unlocked.StartAttack() end
   -- end
@@ -1440,7 +1440,7 @@ function Druid.Rotation()
     end
   elseif Player.SpecID == "sub10" then
     if not Player.Combat and Player:RunningTime() > 0.4 and (not Spell.WrathSub10.LastCastTime or DMW.Time - Spell.WrathSub10.LastCastTime > 1) then
-      if Spell.FormTravel:IsReady() then
+      if Spell.FormTravel:IsReady() and IsOutdoors() then --and Player.Instance ~= "party" then
         if not Buff.FormTravel:Exist() then
           if Spell.FormTravel:Cast(Player, nil, true) then return true end
         end
@@ -1462,6 +1462,22 @@ function Druid.Rotation()
     end
     if Target and Target.ObjectID == 156716 then
       return true
+    end
+    if Target and Target.Distance < 5 and Target.ValidEnemy and Buff.FormCat:Exist() then
+      if Player.ComboPointsDeficit > 0 or not Spell.FerociousBite:IsReady() then
+        if Spell.Shred:IsReady() then
+          if Spell.Shred:Cast(Target) then return true end
+        end
+      else
+        if Spell.FerociousBite:IsReady() then
+          if Spell.FerociousBite:Cast(Target) then return true end
+        end
+      end
+    end
+    if Target and Target.ValidEnemy and Target.Distance < 5 and not Buff.FormCat:Exist() and Player.Energy >= 70 then
+      if Spell.FormCat:IsReady() then
+        if Spell.FormCat:Cast() then return true end
+      end
     end
     if Spell.WrathSub10:IsReady() and not Player.Moving then
       if Target and Target.ValidEnemy then
