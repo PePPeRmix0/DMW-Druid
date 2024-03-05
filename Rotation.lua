@@ -89,6 +89,7 @@ local function Locals()
   -- Enemy10Y, Enemy10YC = Player:GetEnemies(10)
   Enemy30Y, Enemy30YC = Player:GetEnemies(50)
   GCD = Player:GCDRemain()
+  if Player.Class ~= "DRUID" then return end
   -- if not Form then
   if Buff.FormBear:Exist() then
     Form = "Bear"
@@ -821,8 +822,17 @@ end
 local wait = false
 local macroUse = GetTime() - 10
 local macroSellUse = GetTime()
+local sleepframes = 50
 function Druid.Rotation()
   Locals()
+  if Player.Class ~= "DRUID" then 
+    if Target and not Target.Dead and sleepframes <= 0 then 
+      FaceUnit(Target) 
+      sleepframes = 50
+    end
+    sleepframes = sleepframes - 1
+    return true 
+  end
   local foundVendor
   for _, Unit in pairs(DMW.Units) do
     if Unit.Distance <= 5 and (Unit.ObjectID == 62822 or Unit.ObjectID == 32641 or Unit.ObjectID == 32639) then
