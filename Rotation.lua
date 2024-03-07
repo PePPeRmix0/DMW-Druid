@@ -832,7 +832,10 @@ function Druid.Rotation()
         sleepframes = 50
       end
       if Target.Distance > 6 then
-        GrindBot.Navigation.ForcedMovementCoords = {Target.PosX,Target.PosY,Target.PosZ}
+        if not GrindBot.Navigation.NavPath then
+          local x, y, z = unpack(Navigation:GetOppositePositionFromUnit(Target, 2, nil, true))
+          Navigation:MoveTo(x, y, z)
+        end
       end
     end
     sleepframes = sleepframes - 1
