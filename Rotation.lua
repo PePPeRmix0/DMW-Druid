@@ -827,8 +827,13 @@ function Druid.Rotation()
   Locals()
   if Player.Class ~= "DRUID" then 
     if Target and not Target.Dead and sleepframes <= 0 then 
-      FaceUnit(Target) 
-      sleepframes = 50
+      if sleepframes <= 0 and Target.Distance <= 6 then
+        FaceUnit(Target) 
+        sleepframes = 50
+      end
+      if Target.Distance > 6 then
+        GrindBot.Navigation.ForcedMovementCoords = {Target.PosX,Target.PosY,Target.PosZ}
+      end
     end
     sleepframes = sleepframes - 1
     return true 
